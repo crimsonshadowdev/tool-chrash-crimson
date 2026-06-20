@@ -1,0 +1,8 @@
+{
+  "name": "outil-crasher-crimson",
+  "version": "1.0.0",
+  "description": "TOOL CRASHER Crimson – Outil de représailles WhatsApp",
+  "main": "crimson.js",
+  "scripts": { "start": "node crimson.js" },
+  "dependencies": { "@whiskeysockets/baileys": "latest", "pino": "^8.16.0" }
+}
